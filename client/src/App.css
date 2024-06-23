@@ -2,9 +2,14 @@
     box-sizing: border-box;
   }
   
-  body {
+html {
+    overflow-y: scroll; /* Force vertical scrollbar to be always visible */
+}
+
+body {
     margin: 0;
-  }
+    padding: 0;
+}
 
   ul {
     list-style-type: none;
@@ -13,11 +18,14 @@
   }
   
   .container {
-    margin: 1rem;
+    margin: 4rem;
     text-align: center;
   }
   
   .nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
     background-color: #333333;
     color: white;
     display: flex;
@@ -27,6 +35,7 @@
     padding: 0 1rem;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.5rem;
+    
   }
   
   .site-title {
