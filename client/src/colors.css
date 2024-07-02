@@ -1,22 +1,16 @@
 :root {
-    
-    --background-color: #F9F9F9;
-
+    --background-color: #ffe8ef;
+    --text-color: #2f000f;
     --form-border-color: #ccc;
     --focus-border-color: #66afe9;
     --focus-shadow-color: rgba(102, 175, 233, 0.6);
-    
     --button-color: #2189d8;
     --button-hover-color: #2672ac;
-    
-    --navbar-background-color: #698dc4;
-    --navbar-hover-color: #d6d6d6;
-    --navbar-border-color: rgb(176, 176, 176);
-    
-    --dropdown-background-color: #5e7eb0;
+    --navbar-background-color: #ff9fbd;
+    --navbar-hover-color: #91002e;
+    --navbar-border-color: #2f000f;
+    --dropdown-background-color: #ff9fbd;
     --dropdown-shadow-color: rgba(50, 76, 112, 0);
     --dropdown-divider-color: rgb(201, 201, 201);
-
     --error-color: red;
-    }
-    
+}
