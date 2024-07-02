@@ -1,66 +1,229 @@
+@import './colors.css';
+
+/* Global styles */
 * {
-    box-sizing: border-box;
-  }
-  
+  box-sizing: border-box;
+}
+
 html {
-    overflow-y: scroll; /* Force vertical scrollbar to be always visible */
+  overflow-y: scroll;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
 }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container for pages */
+.container {
+  padding: 5rem;
+  text-align: center;
+}
+
+/* Navigation bar styles */
+.nav {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: var(--navbar-background-color);
+  box-shadow: 0px 1px 4px var(--navbar-border-color);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 4rem;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+}
+
+.site-title {
+  font-size: 2.5rem;
+  padding: 1rem 0 0 0;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav li.active {
+  text-decoration: underline;
+}
+
+.nav button.active img{
+  border: solid 2px white;
+  border-radius: 50%;
+  padding: 1px;
+}
+
+.nav li:hover {
+  color: var(--navbar-hover-color);
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px; 
+  border-radius: 50%;
+  border: solid 1px black;
+  object-fit: cover;
+  margin:0;
+  padding: 0;
+}
+
+/* Dropdown menu styles */
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 1rem 0 0.5rem 0;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.dropdown ul {
+  display: block;
+}
+
+.dropdown-menu {
+  background-color: var(--dropdown-background-color);
+  box-shadow: 0px 8px 16px 0px var(--dropdown-shadow-color);
+  list-style-type: none;
+  border: solid var(--navbar-border-color) 1px;
+  display: block;
+  right: 0.5rem;
+  position: absolute;
+  z-index: 10001;
+}
+
+.dropdown-menu li {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: block;
+  position: relative;
+}
+
+.dropdown-menu li span{
+  font-size: 0.8rem;
+  color:rgba(255, 255, 255, 0.649);
+}
+
+.dropdown-menu li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-image: linear-gradient(to right, var(--dropdown-shadow-color), var(--dropdown-divider-color), var(--dropdown-shadow-color));
+}
+
+.dropdown-menu li a {
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Login and register form styles */
+.login-container {
+  display: block;
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.212);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.login-container h1 {
+  text-align: center;
+  padding: 0;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background: var(--button-color);
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
   }
   
-  .container {
-    margin: 4rem;
-    text-align: center;
-  }
-  
-  .nav {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background-color: #333333;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 4rem;
-    padding: 0 1rem;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.5rem;
-    
-  }
-  
-  .site-title {
-    font-size: 2.5rem;
-  }
-  
-  .nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-  }
-  
-  .nav a {
-    color: inherit;
-    text-decoration: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    
-  }
-  
-  .nav li.active {
-    text-decoration: underline;
-  }
-  
-  .nav li:hover {
-    color: #b4b4b4;
-  }
+.login-container button:hover:enabled {
+    background: var(--button-hover-color);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  background-color: var(--background-color);
+  border: 1px solid var(--form-border-color);
+  border-radius: 8px;
+  padding: 6px;
+  width: calc(100% - 10%);
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--focus-border-color);
+  box-shadow: 0 0 8px var(--focus-shadow-color);
+}
+
+.required {
+  color: var(--error-color);
+}
+
+.toggle-password {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.login-link {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-bottom: 20px;
+  padding: 0;
+  text-align: center;
+}
+
+

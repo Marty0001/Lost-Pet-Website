@@ -1,33 +1,97 @@
-// Navigation bar at top of website for changing pages
-
-/**
- * @todo 
- * If user is not logged in, create post routes to login page
- * If user is logged in, login link becomes profile link
- * If profile is hovered, have option to view profile or logout
- */
-
-
-import { Link, useMatch, useResolvedPath } from "react-router-dom"
+// src/nav_bar.js
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useMatch, useResolvedPath, useNavigate, useLocation  } from "react-router-dom";
+import { useAuth } from "./auth_context"; // Import useAuth hook
 
 export default function Navbar() {
+    const { isLoggedIn, user, logout } = useAuth(); // Get auth state and functions
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const profilePicPath = 'http://localhost:8080/Lost-Pet-Website/server/images/profile_pics/';
+
+    // Close the dropdown menu when something is clicked outside of it
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
+        }
+
+        if (showDropdown) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showDropdown]);
+
+    // Toggle dropdown visibility
+    const toggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    };
+
+    // Handle logout, close dropdown, navigate to home page, and reload
+    const handleLogout = () => {
+        logout();
+        setShowDropdown(false);
+        navigate("/");
+        window.location.reload();
+    };
+
+    const isProfileActive = location.pathname === '/profile' || location.pathname === '/edit_profile';
+
     return (
         <nav className="nav">
             <Link to="/" className="site-title">
-                Lost Pet Webstite
+                Lost Pet Website
             </Link>
             <ul>
                 <CustomLink to="/">Home</CustomLink>
-                <CustomLink to="/create_post">Create Post</CustomLink>
-                <CustomLink to="/login">Login</CustomLink>
+                <CustomLink to={isLoggedIn ? "/create_post" : "/login"}>Create Post</CustomLink> {/* Re-direct to login page if not logged in */}
+                <li className="dropdown" ref={dropdownRef}>
+                    <button className={`dropdown-toggle ${isProfileActive ? 'active' : ''}`} onClick={toggleDropdown}>
+                        {/*Check if logged in. If logged in, user their profile pic or defualt if its null. Use defualt it not logged in */}
+                        <img
+                            src={isLoggedIn ? (user.profile_picture ? `${profilePicPath}${user.profile_picture}` : `${profilePicPath}default.jpg`) : `${profilePicPath}default.jpg`}
+                            alt="Profile"
+                            className="profile-pic"
+                        />
+                    </button>
+                    {showDropdown && (
+                        <ul className="dropdown-menu">
+                            {isLoggedIn ? (
+                                <>
+                                    <li>
+                                        <Link to="/profile" onClick={toggleDropdown}>{user.username}</Link>
+                                        <span>{user.email}</span>
+                                    </li>
+                                    <li>
+                                        <Link to="/profile" onClick={toggleDropdown}>My Profile</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/" onClick={handleLogout}>Logout</Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <li>
+                                    <Link to="/login" onClick={toggleDropdown}>Login</Link>
+                                </li>
+                            )}
+                        </ul>
+                    )}
+                </li>
             </ul>
         </nav>
-    )
+    );
 }
 
+// CustomLink component to navigate between pages and set them to active
 function CustomLink({ to, children, ...props }) {
-    const resolvedPath = useResolvedPath(to)
-    const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+    const resolvedPath = useResolvedPath(to);
+    const isActive = useMatch({ path: resolvedPath.pathname, end: true });
 
     return (
         <li className={isActive ? "active" : ""}>
@@ -35,7 +99,5 @@ function CustomLink({ to, children, ...props }) {
                 {children}
             </Link>
         </li>
-    )
+    );
 }
-
-
