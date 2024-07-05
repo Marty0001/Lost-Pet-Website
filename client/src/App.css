@@ -32,7 +32,7 @@ ul {
 /* Navigation bar styles */
 .nav {
   position: fixed;
-  height: 70px;
+  height: 80px;
   width: 100%;
   top: 0;
   padding: 1px;
@@ -45,8 +45,6 @@ ul {
   justify-content: space-between;
   align-items: stretch;
   z-index: 1000;
-
-
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -65,8 +63,6 @@ ul {
   height: fit-content;
   align-self: flex-end;
 }
-
-
 
 .nav a {
   color: inherit;
@@ -337,7 +333,6 @@ ul {
   border-color: var(--focus-border-color);
 }
 
-
 .create-post-image-preview {
   display: flex;
   gap: 10px;
@@ -381,14 +376,12 @@ ul {
   cursor: pointer;
 }
 
-
 .create-post-form .create-post-btn-submit:hover {
   background-color: var(--button-hover-color);
 }
 
 
-
-/* Home page posts */
+/* Home page post styles */
 
 .post-top {
   padding: 10px 10px 5px 10px;
@@ -405,7 +398,6 @@ ul {
   background-color: var(--post-bottom-section-color);
 }
 
-
 .posts-container {
   display: flex;
   flex-direction: column;
@@ -418,10 +410,10 @@ ul {
   margin: 0 auto;
   position: relative;
   border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.134);
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.115);
   width: calc(50%);
   overflow: hidden;
-
 }
 
 .post-details {
@@ -432,8 +424,8 @@ ul {
 
 .status span {
   background-color: var(--status-bubble-missing-color);
-  border-radius: 20px;
-  padding: 6px;
+  border-radius: 24px;
+  padding: 5px 8px;
   font-weight: normal;
 }
 
@@ -470,7 +462,6 @@ ul {
   font-size: 16px;
   margin: 0 1rem 0 0;
   padding: 0;
-
 }
 
 .like-button span {
