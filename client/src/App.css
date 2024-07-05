@@ -424,16 +424,10 @@ ul {
 
 }
 
-
-
 .post-details {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
-}
-
-.status {
-  font-size: 1rem;
 }
 
 .status span {
@@ -462,6 +456,7 @@ ul {
 }
 
 .post-description {
+  text-align: start;
   position: relative;
   padding: 10px 0;
   margin: 0;
