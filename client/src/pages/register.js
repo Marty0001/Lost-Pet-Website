@@ -74,6 +74,7 @@ export default function Register() {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                         maxLength={20} 
+                        minLength={8}
                     />
                 </div>
 
@@ -87,6 +88,7 @@ export default function Register() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         maxLength={20} 
+                        minLength={8}
                     />
                     <span className="toggle-password" onClick={togglePasswordVisibility}> 👁 </span>
                 </div>

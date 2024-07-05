@@ -1,6 +1,5 @@
-// src/nav_bar.js
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useMatch, useResolvedPath, useNavigate, useLocation  } from "react-router-dom";
+import { Link, useMatch, useResolvedPath, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./auth_context"; // Import useAuth hook
 
 export default function Navbar() {
@@ -46,14 +45,14 @@ export default function Navbar() {
     return (
         <nav className="nav">
             <Link to="/" className="site-title">
-                Lost Pet Website
+                Lost Pet Search
             </Link>
             <ul>
-                <CustomLink to="/">Home</CustomLink>
-                <CustomLink to={isLoggedIn ? "/create_post" : "/login"}>Create Post</CustomLink> {/* Re-direct to login page if not logged in */}
+                <CustomLink to="/" shouldSetActive={true}>Home</CustomLink>
+                <CustomLink to={isLoggedIn ? "/create_post" : "/login"} shouldSetActive={isLoggedIn}>Create Post</CustomLink> {/* Re-direct to login page if not logged in */}
                 <li className="dropdown" ref={dropdownRef}>
                     <button className={`dropdown-toggle ${isProfileActive ? 'active' : ''}`} onClick={toggleDropdown}>
-                        {/*Check if logged in. If logged in, user their profile pic or defualt if its null. Use defualt it not logged in */}
+                        {/*Check if logged in. If logged in, user their profile pic or default if its null. Use default it not logged in */}
                         <img
                             src={isLoggedIn ? (user.profile_picture ? `${profilePicPath}${user.profile_picture}` : `${profilePicPath}default.jpg`) : `${profilePicPath}default.jpg`}
                             alt="Profile"
@@ -89,12 +88,12 @@ export default function Navbar() {
 }
 
 // CustomLink component to navigate between pages and set them to active
-function CustomLink({ to, children, ...props }) {
+function CustomLink({ to, children, shouldSetActive, ...props }) {
     const resolvedPath = useResolvedPath(to);
     const isActive = useMatch({ path: resolvedPath.pathname, end: true });
 
     return (
-        <li className={isActive ? "active" : ""}>
+        <li className={isActive && shouldSetActive ? "active" : ""}>
             <Link to={to} {...props}>
                 {children}
             </Link>

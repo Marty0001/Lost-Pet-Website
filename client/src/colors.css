@@ -1,16 +1,34 @@
 :root {
     --background-color: #ffe8ef;
     --text-color: #2f000f;
+
+    --navbar-background-color: #ff9fbd;
+    --navbar-hover-color: #91002e;
+    --navbar-border-color: #2f000f;
+
+    --dropdown-background-color: #ff9fbd;
+    --dropdown-shadow-color: rgba(91, 59, 75, 0.215);
+    --dropdown-divider-color: rgb(0, 0, 0);
+    
     --form-border-color: #ccc;
     --focus-border-color: #66afe9;
     --focus-shadow-color: rgba(102, 175, 233, 0.6);
     --button-color: #2189d8;
-    --button-hover-color: #2672ac;
-    --navbar-background-color: #ff9fbd;
-    --navbar-hover-color: #91002e;
-    --navbar-border-color: #2f000f;
-    --dropdown-background-color: #ff9fbd;
-    --dropdown-shadow-color: rgba(50, 76, 112, 0);
-    --dropdown-divider-color: rgb(201, 201, 201);
+    --button-hover-color: #004a82;
     --error-color: red;
+
+
+    --post-top-section-color: #ffbbd0;
+    --post-middle-section-color: #ffd8e4;
+    --post-bottom-section-color: #ffbbd0;
+    --post-divider-color: #000000;
+    --post-sub-header-color: #4e4c4c;
+    --status-bubble-missing-color: #ff0000aa;
+
+    --like-icon-color: #ff0000a8;
+    --like-icon-hover-color: #ff0000;
+    --like-icon-liked-color: rgb(255, 0, 0);
+
+    --comment-icon-color: #000000d6;
+    --comment-icon-hover-color: #000000;
 }

@@ -47,7 +47,6 @@ export default function Login() {
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        required
                     />
                 </div>
                 <div className="form-group">
@@ -57,7 +56,6 @@ export default function Login() {
                         type={showPassword ? "text" : "password"} // Toggle input type
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
                     />
                     <span className="toggle-password" onClick={togglePasswordVisibility}> 👁 </span>
                 </div>

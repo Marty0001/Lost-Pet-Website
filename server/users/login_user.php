@@ -19,6 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $result->fetch_assoc();
     if ($user && password_verify($password, $user["password"])) {
         unset($user["password"]);
+        unset($user["user_id"]);
+        unset($user["created_at"]);
+        unset($user["updated-at"]);
         echo json_encode(["status" => "success", "user" => $user]);
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid username or password"]);
