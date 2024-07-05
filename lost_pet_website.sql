@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2024 at 11:56 PM
+-- Generation Time: Jul 06, 2024 at 12:49 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -48,6 +48,17 @@ CREATE TABLE `images` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `images`
+--
+
+INSERT INTO `images` (`image_id`, `post_id`, `image_location`, `created_at`) VALUES
+(13, 15, '../images/6688551448715.jpg', '2024-07-05 20:18:28'),
+(14, 15, '../images/6688551449926.JPG', '2024-07-05 20:18:28'),
+(15, 15, '../images/668855144a3ab.jpg', '2024-07-05 20:18:28'),
+(16, 16, '../images/6688558bf2476.jpg', '2024-07-05 20:20:27'),
+(17, 16, '../images/6688558bf3452.jpg', '2024-07-05 20:20:27');
+
 -- --------------------------------------------------------
 
 --
@@ -76,10 +87,19 @@ CREATE TABLE `posts` (
   `last_seen_location` varchar(255) NOT NULL,
   `last_seen_date` datetime NOT NULL,
   `reward` decimal(10,2) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
+  `contact` varchar(25) DEFAULT NULL,
+  `status` varchar(30) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`post_id`, `user_id`, `pet_name`, `species`, `description`, `last_seen_location`, `last_seen_date`, `reward`, `contact`, `status`, `created_at`, `updated_at`) VALUES
+(15, 2, 'Marty', 'Cat', 'I let my cat Marty in the backyard and we haven\'t seen him in 2 days.', 'Westland, MI', '2024-07-05 00:00:00', 50.00, '734-123-4567', 'missing', '2024-07-05 20:18:28', '2024-07-05 20:18:28'),
+(16, 3, 'Luna', 'Cat', 'Super long description Super long description Super long description Super long description Super long description Super long description Super long description Super long description Super long description Super long description Super long description Super long description Super long description S', 'New York, NY', '2024-07-01 00:00:00', 0.00, 'test@mail.com', 'missing', '2024-07-05 20:20:27', '2024-07-05 20:20:27');
 
 -- --------------------------------------------------------
 
@@ -92,11 +112,19 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `profile_picture`, `created_at`, `updated_at`) VALUES
+(2, 'tester', '$2y$10$kpo4AKdaik33dAFM/VrdkOV1IQIpNnatc83FWpHwjDseejJ44VM.S', 'test@mail.com', 'cat2.jpg', '2024-06-24 22:40:14', '2024-06-27 00:44:50'),
+(3, 'tester2', '$2y$10$zcSKmOgW/Cql1Uyzi5bmr.lb0rPVUugt2CE6iPFCOb/z1SwdnNmpi', 'test2@mail.com', NULL, '2024-06-25 21:05:55', '2024-06-25 21:05:55'),
+(4, 'tester3', '$2y$10$9bTPtzZsZRjBVxFFeOh4su0fA4r07RqP6r/kg2DIlCPVsRH4zfvIq', 'test3@mail.com', NULL, '2024-06-25 22:07:57', '2024-06-25 22:07:57');
 
 --
 -- Indexes for dumped tables
@@ -154,7 +182,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `likes`
@@ -166,13 +194,13 @@ ALTER TABLE `likes`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
