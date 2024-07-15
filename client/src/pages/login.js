@@ -53,7 +53,7 @@ export default function Login() {
                     <label>Password</label>
                     <br />
                     <input
-                        type={showPassword ? "text" : "password"} // Toggle input type
+                        type={showPassword ? "text" : "password"} // Toggle input type for password visibilty
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

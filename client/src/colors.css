@@ -17,17 +17,13 @@
     --button-hover-color: #004a82;
     --error-color: red;
 
-
-    --post-top-section-color: #ffbbd0;
-    --post-middle-section-color: #ffd8e4;
-    --post-bottom-section-color: #ffbbd0;
     --post-divider-color: #000000;
     --post-sub-header-color: #4e4c4c;
     --status-bubble-missing-color: #ff0000aa;
+    --status-bubble-found-color: #1cd14faa;
 
-    --like-icon-color: #ff0000a8;
-    --like-icon-hover-color: #ff0000;
-    --like-icon-liked-color: rgb(255, 0, 0);
+    --like-icon-color: #ff4949ca;
+    --like-icon-liked-color: #ff0000;
 
     --comment-icon-color: #000000d6;
     --comment-icon-hover-color: #000000;

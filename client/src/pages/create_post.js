@@ -33,10 +33,11 @@ export default function CreatePost() {
         }
     };
 
-    const handleImageChange = (e) => {
-        const selectedFiles = Array.from(e.target.files);
-        const limitedFiles = selectedFiles.slice(0, 3);
-        setImages(limitedFiles);
+     // Handle changes to the file input for image uploads
+     const handleImageChange = (e) => {
+        const selectedFiles = Array.from(e.target.files); // Convert File list to Array
+        const limitedFiles = selectedFiles.slice(0, 3); // Limit the number of files to 3
+        setImages(limitedFiles); // Update state with selected images
         if (selectedFiles.length > 3) {
             setErrorMessage("You can upload up to 3 images only.");
         } else {
@@ -44,8 +45,9 @@ export default function CreatePost() {
         }
     };
 
+    // Remove an image from the list of selected images
     const handleRemoveImage = (index) => {
-        const newImages = images.filter((_, i) => i !== index);
+        const newImages = images.filter((_, i) => i !== index); // Create new image list but dont include the removed image
         setImages(newImages);
 
         // Update the input files to reflect the new images array
@@ -54,7 +56,9 @@ export default function CreatePost() {
         fileInputRef.current.files = dataTransfer.files;
     };
 
+    // Validate the form inputs
     const validateForm = () => {
+        // Check for empty fields and custom species if "Other" is selected
         if (!petName || !species || (species === "Other" && !customSpecies) || !location || !lastSeenDate || !description || !contactInfo) {
             setErrorMessage("Please fill in all required fields.");
             return false;
@@ -77,9 +81,9 @@ export default function CreatePost() {
         const formData = new FormData();
         formData.append("username", user.username)
         formData.append("petName", petName);
-        formData.append("species", species === "Other" ? customSpecies : species);
+        formData.append("species", species === "Other" ? customSpecies : species); // If other option was selected in dropdown, use the custom species input
         formData.append("location", location);
-        formData.append("lastSeenDate", lastSeenDate); // Append last seen date to form data
+        formData.append("lastSeenDate", lastSeenDate);
         formData.append("description", description);
         formData.append("contactInfo", contactInfo);
         formData.append("reward", reward);
@@ -133,6 +137,7 @@ export default function CreatePost() {
                         <option value="Bird">Bird</option>
                         <option value="Other">Other</option>
                     </select>
+                    {/* If other option is selected, allow user input */}
                     {species === "Other" && (
                         <input
                             type="text"
@@ -168,7 +173,7 @@ export default function CreatePost() {
                 <div className="create-post-form-group">
                     <label>Contact Info (Email or phone)<span className="required">*</span></label>
                     <input
-                        type="tel" // Set type to 'tel' for phone number input
+                        type="tel" // 'tel' for phone number input
                         value={contactInfo}
                         onChange={(e) => setContactInfo(e.target.value)}
                         required
