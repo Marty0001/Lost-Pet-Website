@@ -196,7 +196,7 @@ export default function CreatePost() {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
-                        maxLength={300}
+                        maxLength={500}
                         className="create-post-form-control"
                     ></textarea>
                 </div>

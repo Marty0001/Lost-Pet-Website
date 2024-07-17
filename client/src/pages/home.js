@@ -8,6 +8,7 @@ export default function Home() {
     const [posts, setPosts] = useState([]); // State to store the posts
     const [loading, setLoading] = useState(true); // State to manage loading state
     const [error, setError] = useState(null); // State to manage error state
+    const [selectedImage, setSelectedImage] = useState(null); // State to manage selected image for modal
     const navigate = useNavigate(); // Navigate to re-direct to other pages
 
     // useEffect hook to fetch posts when the component mounts
@@ -61,6 +62,16 @@ export default function Home() {
         }
     };
 
+    // Function to handle image click
+    const handleImageClick = (image) => {
+        setSelectedImage(image); // Set the selected image
+    };
+
+    // Function to close the modal
+    const closeModal = () => {
+        setSelectedImage(null); // Clear the selected image
+    };
+
     // If data is still loading, display a loading message
     if (loading) {
         return <p>Loading...</p>;
@@ -85,19 +96,34 @@ export default function Home() {
                         <p className="post-description">{post.description}</p>
                         <div className="likes-and-comments">
                             <button className={`like-button ${post.user_liked ? 'liked' : ''}`} onClick={() => handleLike(post)}>
-                                <span className="heart-icon">❤</span>{post.likes}
+                                <span className="heart-icon">❤</span>{new Intl.NumberFormat().format(post.likes)}
                             </button>
-                            <button className="comment-button"><span>💬</span>{post.comments.length}</button>
+                            <button className="comment-button" onClick={() => navigate(`/post/${post.post_id}`)}>
+                                <span>💬</span>{post.comments}
+                            </button>
                         </div>
                     </div>
                     <br />
                     <div className="post-images">
                         {post.images.map((image, index) => (
-                            <img key={index} src={`http://localhost:8080/lost-pet-website/server${image}`} alt="Pet" className="post-image" />
+                            <img
+                                key={index}
+                                src={`http://localhost:8080/lost-pet-website/server${image}`}
+                                alt="Pet"
+                                className="post-image"
+                                onClick={() => handleImageClick(`http://localhost:8080/lost-pet-website/server${image}`)}
+                            />
                         ))}
                     </div>
                 </div>
             ))}
+
+            {/* Modal for enlarged image */}
+            {selectedImage && (
+                <div className="modal" onClick={closeModal}>
+                    <img className="modal-content" src={selectedImage} alt="Enlarged Pet" />
+                </div>
+            )}
         </div>
     );
 }

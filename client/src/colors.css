@@ -18,7 +18,7 @@
     --error-color: red;
 
     --post-divider-color: #000000;
-    --post-sub-header-color: #4e4c4c;
+    --post-sub-header-color: #757575;
     --status-bubble-missing-color: #ff0000aa;
     --status-bubble-found-color: #1cd14faa;
 
@@ -27,4 +27,12 @@
 
     --comment-icon-color: #000000d6;
     --comment-icon-hover-color: #000000;
+
+    --add-comment-button-color: #a24683;
+    --add-comment-border-color: #5e5e5e;
+    --add-comment-button-hover-color: #cb57a5;
+    --comment-border-color: #00000051;
+    --comment-background-color: #cccccc39;
+
+
 }

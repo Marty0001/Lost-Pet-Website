@@ -18,6 +18,7 @@ export default function Login() {
             const response = await axios.post("http://localhost:8080/lost-pet-website/server/users/login_user.php", { username, password });
             if (response.data.status === "success") {
                 login(response.data.user); // Login user
+                setTimeout(() => {}, 2000); // Timeout to simulate loading time and allow authcontext to save local data
                 navigate("/"); // Redirect to homepage
                 window.location.reload();
             } else {

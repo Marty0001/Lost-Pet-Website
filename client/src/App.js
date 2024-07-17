@@ -5,6 +5,7 @@ import Login from "./pages/login"
 import Register from "./pages/register";
 import Profile from "./pages/profile";
 import EditProfile from "./pages/edit_profile";
+import PostComments from "./pages/post_comments";
 import { Route, Routes } from "react-router-dom"
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit_profile" element={<EditProfile />} />
+          <Route path="/post/:postId" element={<PostComments />} /> 
         </Routes>
       </div>
     </>
@@ -26,5 +28,3 @@ function App() {
 }
 
 export default App
-
-

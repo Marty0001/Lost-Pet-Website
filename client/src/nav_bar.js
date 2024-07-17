@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useMatch, useResolvedPath, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "./auth_context"; // Import useAuth hook
+import { Link, useMatch, useResolvedPath, useLocation } from "react-router-dom";
+import { useAuth } from "./auth_context";
 
 export default function Navbar() {
     const { isLoggedIn, user, logout } = useAuth(); // Get auth state and functions
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
     const location = useLocation();
-    const navigate = useNavigate();
     const profilePicPath = 'http://localhost:8080/Lost-Pet-Website/server/images/profile_pics/';
 
     // Close the dropdown menu when something is clicked outside of it
@@ -36,7 +35,6 @@ export default function Navbar() {
     const handleLogout = () => {
         logout();
         setShowDropdown(false);
-        navigate("/");
         window.location.reload();
     };
 

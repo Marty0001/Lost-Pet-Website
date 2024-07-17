@@ -5,7 +5,7 @@ const AuthContext = createContext();
 // AuthProvider component to wrap around parts of the app that need access to auth state
 export function AuthProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({ username: '' }); // Empty username is not logged in
 
     useEffect(() => {
         // Check if the user is logged in when the component mounts
