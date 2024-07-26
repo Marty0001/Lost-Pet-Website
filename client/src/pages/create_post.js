@@ -108,6 +108,11 @@ export default function CreatePost() {
         }
     };
 
+    if (!isLoggedIn) {
+        navigate('/login'); // Redirect to login if not logged in
+        return;
+    }
+    
     return (
         <div className="create-post-container">
             <h1>Create Post</h1>

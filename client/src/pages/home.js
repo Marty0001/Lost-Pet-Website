@@ -4,19 +4,24 @@ import axios from 'axios';
 import { useAuth } from '../auth_context';
 
 export default function Home() {
+    const [selectedDate, setSelectedDate] = useState('newest'); // Default to 'newest'
+    const [selectedSpecies, setSelectedSpecies] = useState(['all']); // Default to 'all'
+    const [minReward, setMinReward] = useState(''); // State for minimum reward input
     const { isLoggedIn, user } = useAuth(); // Get user info to check for login status and username
     const [posts, setPosts] = useState([]); // State to store the posts
     const [loading, setLoading] = useState(true); // State to manage loading state
     const [error, setError] = useState(null); // State to manage error state
     const [selectedImage, setSelectedImage] = useState(null); // State to manage selected image for modal
+    const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // State to manage filter box visibility
     const navigate = useNavigate(); // Navigate to re-direct to other pages
+
 
     // useEffect hook to fetch posts when the component mounts
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 // Fetch posts from the server, passing the username if the user is logged in to get their liked posts for like button styling
-                const response = await axios.get(`http://localhost:8080/lost-pet-website/server/posts/get_post.php?username=${isLoggedIn ? user.username : ''}`);
+                const response = await axios.get(`http://localhost:8080/lost-pet-website/server/posts/get_posts.php?username=${isLoggedIn ? user.username : ''}`);
                 if (response.data && response.data.posts) {
                     setPosts(response.data.posts); // Update posts state with the fetched posts
                 }
@@ -67,10 +72,56 @@ export default function Home() {
         setSelectedImage(image); // Set the selected image
     };
 
+    const handleEdit = (postId) => {
+        navigate(`/edit_post/${postId}`); // Redirect to the edit post page
+    };
+
     // Function to close the modal
     const closeModal = () => {
         setSelectedImage(null); // Clear the selected image
     };
+
+    // Function to handle checkbox change for multiple selections
+    const handleCheckboxChange = (setState, state, value) => {
+        setState(
+            state.includes(value)
+                ? state.filter(item => item !== value)
+                : [...state, value]
+        );
+    };
+
+    // Function to toggle filter box visibility
+    const toggleFilterBox = () => {
+        setIsFilterBoxVisible(!isFilterBoxVisible);
+    };
+
+    // Function to filter and sort posts
+    const filterAndSortPosts = (posts) => {
+        let filteredPosts = posts;
+
+        // Filter by species
+        if (!selectedSpecies.includes('all')) {
+            filteredPosts = filteredPosts.filter(post => selectedSpecies.includes(post.species));
+        }
+
+        // Filter by minimum reward
+        if (minReward !== '') {
+            filteredPosts = filteredPosts.filter(post => Number(post.reward) >= minReward);
+            console.log(minReward);
+        }
+
+        // Sort by date
+        if (selectedDate === 'newest') {
+            filteredPosts = filteredPosts.sort((a, b) => new Date(b.last_seen_date) - new Date(a.last_seen_date));
+        } else if (selectedDate === 'oldest') {
+            filteredPosts = filteredPosts.sort((a, b) => new Date(a.last_seen_date) - new Date(b.last_seen_date));
+        }
+
+        return filteredPosts;
+    };
+
+    // Filter and sort posts
+    const filteredAndSortedPosts = filterAndSortPosts(posts);
 
     // If data is still loading, display a loading message
     if (loading) {
@@ -85,12 +136,101 @@ export default function Home() {
     // Posts HTML
     return (
         <div className="posts-container">
-            {posts.map(post => (
+            <div className="toggle-filter-box">
+                <button onClick={toggleFilterBox}>☰</button>
+            </div>
+            {isFilterBoxVisible && (
+                <div className="filter-sort-box">
+                    <h3>Filter & Sort</h3>
+                    <div className="filter-option">
+                        <label>Date:</label>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedDate === 'newest'}
+                                    onChange={() => setSelectedDate('newest')}
+                                />
+                                Newest
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedDate === 'oldest'}
+                                    onChange={() => setSelectedDate('oldest')}
+                                />
+                                Oldest
+                            </label>
+                        </div>
+                    </div>
+                    <div className="filter-option">
+                        <label>Species:</label>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSpecies.includes('all')}
+                                    onChange={() => handleCheckboxChange(setSelectedSpecies, selectedSpecies, 'all')}
+                                />
+                                All
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSpecies.includes('Dog')}
+                                    onChange={() => handleCheckboxChange(setSelectedSpecies, selectedSpecies, 'Dog')}
+                                />
+                                Dog
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSpecies.includes('Cat')}
+                                    onChange={() => handleCheckboxChange(setSelectedSpecies, selectedSpecies, 'Cat')}
+                                />
+                                Cat
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSpecies.includes('Bird')}
+                                    onChange={() => handleCheckboxChange(setSelectedSpecies, selectedSpecies, 'Bird')}
+                                />
+                                Bird
+                            </label>
+                        </div>
+                    </div>
+                    <div className="filter-option">
+                        <label>Minimum Reward:</label>
+                        <div>
+                            <input
+                                type="number"
+                                value={minReward}
+                                onChange={(e) => setMinReward(e.target.value)}
+                                placeholder="$"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+            {filteredAndSortedPosts.map((post, index) => (
                 <div key={post.post_id} className="post-card">
+
                     <div className='post-details'>
+                        {post.username === user.username && (
+                            <button className="edit-post-button" onClick={() => handleEdit(post.post_id)}>Edit ✎</button>
+                        )}
                         <span className='post-username'>{post.username} - {post.contact}</span>
                         <span className='post-pet-name'>{post.pet_name}
-                            <span className="status"> : <span>{post.status}</span></span>
+                            <span className={`status ${post.status === 'missing' ? 'status-missing' : 'status-found'}`}> : <span>{post.status}</span></span>
                         </span>
                         <span className='post-info'>{post.species} - {post.last_seen_location} - {formatDate(post.last_seen_date)} - Reward: ${post.reward} </span>
                         <p className="post-description">{post.description}</p>

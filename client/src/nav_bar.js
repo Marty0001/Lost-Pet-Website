@@ -52,7 +52,7 @@ export default function Navbar() {
                     <button className={`dropdown-toggle ${isProfileActive ? 'active' : ''}`} onClick={toggleDropdown}>
                         {/*Check if logged in. If logged in, user their profile pic or default if its null. Use default it not logged in */}
                         <img
-                            src={isLoggedIn ? (user.profile_picture ? `${profilePicPath}${user.profile_picture}` : `${profilePicPath}default.jpg`) : `${profilePicPath}default.jpg`}
+                            src={`${profilePicPath}default.jpg`}
                             alt="Profile"
                             className="profile-pic"
                         />
@@ -66,7 +66,7 @@ export default function Navbar() {
                                         <span>{user.email}</span>
                                     </li>
                                     <li>
-                                        <Link to="/profile" onClick={toggleDropdown}>My Profile</Link>
+                                        <Link to="/profile" onClick={toggleDropdown}>My Posts</Link>
                                     </li>
                                     <li>
                                         <Link to="/" onClick={handleLogout}>Logout</Link>

@@ -31,7 +31,7 @@ export default function PostComments() {
     const fetchComments = useCallback(async () => {
         try {
             // Fetch comments for the post from the server
-            const response = await axios.get(`http://localhost:8080/lost-pet-website/server/posts/get_comment.php?post_id=${postId}`);
+            const response = await axios.get(`http://localhost:8080/lost-pet-website/server/posts/get_comments.php?post_id=${postId}`);
             if (response.data && response.data.comments) {
                 setComments(response.data.comments); // Set the comments
             }
@@ -158,7 +158,7 @@ export default function PostComments() {
                         <div className='post-details'>
                             <span className='post-username'>{post.username} - {post.contact}</span>
                             <span className='post-pet-name'>{post.pet_name}
-                                <span className="status"> : <span>{post.status}</span></span>
+                                <span className={`status ${post.status === 'missing' ? 'status-missing' : 'status-found'}`}> : <span>{post.status}</span></span>
                             </span>
                             <span className='post-info'>{post.species} - {post.last_seen_location} - {formatDate(post.last_seen_date)} - Reward: ${post.reward} </span>
                             <p className="post-description">{post.description}</p>
