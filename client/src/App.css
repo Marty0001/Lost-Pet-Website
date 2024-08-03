@@ -77,6 +77,10 @@ ul {
   padding-left: 2rem;
 }
 
+.logo-img{
+  width: 60px;
+}
+
 .nav ul {
   overflow: hidden;
   margin: auto 1rem;
@@ -164,7 +168,7 @@ ul {
   color: rgba(0, 0, 0, 0.462);
 }
 
-.dropdown-menu li:not(:last-child)::after {
+.dropdown-menu li:not(:last-child)::after, .edit-options-popup button:not(:last-child)::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -408,18 +412,6 @@ ul {
 
 /* Edit post form styles */
 
-.cancel-edit-post-button{
-  font-family: Bahnschrift, Arial, Helvetica, sans-serif;
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  left: 10px;
-  top: 10px;
-}
-
 .edit-post-container {
   position: relative;
   background-color: #f9f9f9;
@@ -489,27 +481,29 @@ ul {
   margin-left: auto;
 }
 
-.edit-post-btn-submit:hover {
-  background-color: var(--button-hover-color);
-}
-
-.edit-post-btn-delete {
-  width: 200px;
-  background-color: red;
+.cancel-edit-post-button{
+  background-color: var(--status-bubble-missing-color);
   color: white;
   border: none;
   border-radius: 4px;
   padding: 10px;
   cursor: pointer;
   font-size: 1rem;
+  width: 200px;
 }
 
-.edit-post-btn-delete:hover {
-  background-color: darkred;
+.cancel-edit-post-button:hover{
+  background-color: var(--like-icon-liked-color);
 }
+
+.edit-post-btn-submit:hover {
+  background-color: var(--button-hover-color);
+}
+
 
 /* Home page posts */
 
+/* Filter box styles */
 .toggle-filter-box, .toggle-filter-box button {
   position: fixed;
   top: 80px;
@@ -578,7 +572,6 @@ ul {
   flex-direction: column;
   flex-wrap: wrap;
   gap: 2rem;
-  /* Space between cards */
 }
 
 .edit-post-button{
@@ -606,6 +599,87 @@ ul {
   text-align: left;
 }
 
+/* Edit and delete post button*/
+.post-edit-options{
+position: relative;
+}
+
+.three-dot-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 5px;
+  align-self: left;
+}
+
+.edit-options-popup {
+  z-index: 0;
+  background: var(--dropdown-background-color);
+  display: block;
+  position: absolute;
+  top: -35px;
+  left: 30px;
+  border: 1px solid black;
+  padding: 0;
+}
+
+.edit-options-popup button {
+  font-family: Bahnschrift, Arial, Helvetica, sans-serif;
+  position: relative;
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 8px;
+  text-align: left;
+}
+
+.edit-options-popup button:hover {
+  color: var(--navbar-hover-color);
+}
+
+.delete-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+
+.delete-modal-content .confirm:hover{
+  background: var(--like-icon-color);
+}
+
+.delete-modal-content .cancel:hover{
+  background: var(--focus-shadow-color);
+}
+
+
+.delete-modal-content button {
+  font-family: Bahnschrift, Arial, Helvetica, sans-serif;
+  border-radius: 2px;
+  border: solid 1px black;
+  margin: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+
 /* Line between posts */
 .post-card::after {
   content: "";
@@ -618,6 +692,7 @@ ul {
 }
 
 .post-details {
+  position: relative;
   margin: 0;
   padding: 0;
   display: flex;
@@ -636,7 +711,7 @@ ul {
   font-size: 24px;
 }
 
-.status-missing span {
+.status-lost span {
   position: absolute;
   background-color: var(--status-bubble-missing-color);
   border-radius: 20px;

@@ -8,16 +8,17 @@ export default function CreatePost() {
     const [species, setSpecies] = useState("");
     const [customSpecies, setCustomSpecies] = useState("");
     const [location, setLocation] = useState("");
-    const [lastSeenDate, setLastSeenDate] = useState(""); // State for Last Seen Date
+    const [lastSeenDate, setLastSeenDate] = useState("");
+    const [status, setStatus] = useState("Lost");
     const [description, setDescription] = useState("");
     const [contactInfo, setContactInfo] = useState("");
     const [reward, setReward] = useState("");
-    const [images, setImages] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const { isLoggedIn } = useAuth();
-    const fileInputRef = useRef(null);
+    const [images, setImages] = useState([]); // Array of image locations
+    const [errorMessage, setErrorMessage] = useState(""); // Error message to display if any are encountered
+    const [loading, setLoading] = useState(false); // Show that the submition is processing
+    const navigate = useNavigate(); // Navigatge between pages
+    const { isLoggedIn } = useAuth(); // Logged in status
+    const fileInputRef = useRef(null); // For uploading images
 
      // Initialize lastSeenDate to today's date
      useEffect(() => {
@@ -66,6 +67,7 @@ export default function CreatePost() {
         return true;
     };
 
+    // Handle create post submit
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!isLoggedIn) {
@@ -87,6 +89,7 @@ export default function CreatePost() {
         formData.append("description", description);
         formData.append("contactInfo", contactInfo);
         formData.append("reward", reward);
+        formData.append("status", status);
         images.forEach((image, index) => {
             formData.append(`image${index + 1}`, image);
         });
@@ -194,6 +197,18 @@ export default function CreatePost() {
                         onChange={(e) => setReward(e.target.value)}
                         className="create-post-form-control"
                     />
+                </div>
+                <div className="create-post-form-group">
+                    <label>Status</label>
+                    <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        required
+                        className="create-post-form-control"
+                    >
+                        <option value="Lost">Lost</option>
+                        <option value="Found">Found</option>
+                    </select>
                 </div>
                 <div className="create-post-form-group description-group">
                     <label>Description<span className="required">*</span></label>

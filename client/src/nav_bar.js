@@ -43,7 +43,11 @@ export default function Navbar() {
     return (
         <nav className="nav">
             <Link to="/" className="site-title">
-                Lost Pet Search
+                Lost Pet Search <img
+                src={`${profilePicPath}title_logo.png`}
+                alt="logo"
+                className="logo-img"
+                 />
             </Link>
             <ul>
                 <CustomLink to="/" shouldSetActive={true}>Home</CustomLink>

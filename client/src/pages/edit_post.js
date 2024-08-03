@@ -76,7 +76,7 @@ export default function EditPost() {
         return true;
     };
 
-    // Update post data
+    // Update post data on submit
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!isLoggedIn) {
@@ -117,27 +117,6 @@ export default function EditPost() {
         }
     };
 
-    // Delete post and all likes,comments, images
-    const handleDelete = async () => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this post?");
-        if (confirmDelete) {
-            try {
-                const response = await axios.post("http://localhost:8080/lost-pet-website/server/posts/delete_post.php", {
-                    post_id: postId,
-                    username: user.username
-                });
-                if (response.data.status === "success") {
-                    navigate("/");
-                } else {
-                    setErrorMessage(response.data.message);
-                }
-            } catch (error) {
-                console.error("Error deleting post", error);
-                setErrorMessage("Failed to delete post. Please try again later.");
-            }
-        }
-    };
-
     if (!isLoggedIn) {
         navigate('/login');
         return;
@@ -145,7 +124,6 @@ export default function EditPost() {
 
     return (
         <div className="edit-post-container">
-            <button type="button" onClick={() => navigate('/')} className="cancel-edit-post-button">cancel</button>
             <h1>Edit Post</h1>
             {errorMessage && <p className="edit-post-error-message">{errorMessage}</p>}
             <form onSubmit={handleSubmit} className="edit-post-form">
@@ -233,8 +211,8 @@ export default function EditPost() {
                         required
                         className="edit-post-form-control"
                     >
-                        <option value="lost">Lost</option>
-                        <option value="found">Found</option>
+                        <option value="Lost">Lost</option>
+                        <option value="Found">Found</option>
                     </select>
                 </div>
                 <div className="edit-post-form-group description-group">
@@ -247,12 +225,11 @@ export default function EditPost() {
                         className="edit-post-form-control"
                     ></textarea>
                 </div>
-                <button type="button" onClick={handleDelete} className="edit-post-btn-delete">
-                    Delete Post
-                </button>
+                <button type="button" onClick={() => navigate(`/post/${postId}`)} className="cancel-edit-post-button">Cancel</button>
                 <button type="submit" disabled={loading} className="edit-post-btn-submit">
                     {loading ? "Submitting..." : "Update Post"}
                 </button>
+
             </form>
         </div>
     );

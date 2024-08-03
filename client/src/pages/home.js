@@ -13,6 +13,9 @@ export default function Home() {
     const [error, setError] = useState(null); // State to manage error state
     const [selectedImage, setSelectedImage] = useState(null); // State to manage selected image for modal
     const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // State to manage filter box visibility
+    const [showEditOptions, setShowEditOptions] = useState({}); // State to display the edit and delete post buttons
+    const [showDeleteModal, setShowDeleteModal] = useState(false); // Sate to display the delete confirmation popup
+    const [postToDelete, setPostToDelete] = useState(null); // Selected post to delete
     const navigate = useNavigate(); // Navigate to re-direct to other pages
 
 
@@ -72,11 +75,41 @@ export default function Home() {
         setSelectedImage(image); // Set the selected image
     };
 
+    // Toggle the edit and delete button visibility
+    const toggleEditOptions = (postId) => {
+        setShowEditOptions((prev) => ({
+            ...prev,
+            [postId]: !prev[postId]
+        }));
+    };
+
+    // Navigate to edit post page for the chosen post
     const handleEdit = (postId) => {
         navigate(`/edit_post/${postId}`); // Redirect to the edit post page
     };
 
-    // Function to close the modal
+    // Display modal popup for delete confirmation
+    const confirmDelete = (postId) => {
+        setPostToDelete(postId);
+        setShowDeleteModal(true);
+    };
+
+    // Delete post on confirmation
+    const handleDelete = async () => {
+        try {
+            await axios.post('http://localhost:8080/lost-pet-website/server/posts/delete_post.php', {
+                post_id: postToDelete,
+                username: user.username
+            });
+            setPosts(posts.filter(post => post.post_id !== postToDelete));
+            setShowDeleteModal(false);
+            setPostToDelete(null);
+        } catch (error) {
+            console.error('Error deleting the post:', error);
+        }
+    };
+
+    // Close the enlarged image modal
     const closeModal = () => {
         setSelectedImage(null); // Clear the selected image
     };
@@ -225,12 +258,20 @@ export default function Home() {
                 <div key={post.post_id} className="post-card">
 
                     <div className='post-details'>
-                        {post.username === user.username && (
-                            <button className="edit-post-button" onClick={() => handleEdit(post.post_id)}>Edit ✎</button>
+                         {post.username === user.username && (
+                            <div className="post-edit-options">
+                                <button className="three-dot-button" onClick={() => toggleEditOptions(post.post_id)}>...</button>
+                                {showEditOptions[post.post_id] && (
+                                    <div className="edit-options-popup">
+                                        <button onClick={() => handleEdit(post.post_id)}>Edit</button>
+                                        <button onClick={() => confirmDelete(post.post_id)}>Delete</button>
+                                    </div>
+                                )}
+                            </div>
                         )}
                         <span className='post-username'>{post.username} - {post.contact}</span>
                         <span className='post-pet-name'>{post.pet_name}
-                            <span className={`status ${post.status === 'missing' ? 'status-missing' : 'status-found'}`}> : <span>{post.status}</span></span>
+                            <span className={`status ${post.status === 'Lost' ? 'status-lost' : 'status-found'}`}> : <span>{post.status}</span></span>
                         </span>
                         <span className='post-info'>{post.species} - {post.last_seen_location} - {formatDate(post.last_seen_date)} - Reward: ${post.reward} </span>
                         <p className="post-description">{post.description}</p>
@@ -262,6 +303,16 @@ export default function Home() {
             {selectedImage && (
                 <div className="modal" onClick={closeModal}>
                     <img className="modal-content" src={selectedImage} alt="Enlarged Pet" />
+                </div>
+            )}
+            {/* Modal for delete post confirmation*/}
+            {showDeleteModal && (
+                <div className="delete-modal">
+                    <div className="delete-modal-content">
+                        <p>Are you sure you want to delete this post?</p>
+                        <button className='cancel' onClick={() => setShowDeleteModal(false)}>No</button>
+                        <button  className='confirm' onClick={handleDelete}>Yes</button>
+                    </div>
                 </div>
             )}
         </div>

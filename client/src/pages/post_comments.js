@@ -11,10 +11,13 @@ export default function PostComments() {
     const [loading, setLoading] = useState(true); // Indicates loading state
     const [error, setError] = useState(null); // Holds any error messages
     const [newComment, setNewComment] = useState(''); // Holds the new comment text
-    const navigate = useNavigate(); // Hook for navigation
     const [commentError, setCommentError] = useState(''); // Holds comment-related error messages
     const [toggledComment, setToggledComment] = useState(null); // Tracks the index of the delete comment button visibility
     const [selectedImage, setSelectedImage] = useState(null); // State to manage selected image for modal
+    const [showEditOptions, setShowEditOptions] = useState({}); // State to display the edit and delete post buttons
+    const [showDeleteModal, setShowDeleteModal] = useState(false); // Sate to display the delete confirmation popup
+    const [postToDelete, setPostToDelete] = useState(null); // Selected post to delete
+    const navigate = useNavigate(); // Hook for navigation
 
     const fetchPostDetails = useCallback(async () => {
         try {
@@ -125,6 +128,41 @@ export default function PostComments() {
         return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`;
     };
 
+    // Toggle the edit and delete button visibility
+    const toggleEditOptions = (postId) => {
+        setShowEditOptions((prev) => ({
+            ...prev,
+            [postId]: !prev[postId]
+        }));
+    };
+
+    // Navigate to edit post page for the chosen post
+    const handleEdit = (postId) => {
+        navigate(`/edit_post/${postId}`); // Redirect to the edit post page
+    };
+
+    // Display modal popup for delete confirmation
+    const confirmDelete = (postId) => {
+        setPostToDelete(postId);
+        setShowDeleteModal(true);
+    };
+
+    // Delete post on confirmation
+    const handleDelete = async () => {
+        try {
+            await axios.post('http://localhost:8080/lost-pet-website/server/posts/delete_post.php', {
+                post_id: postToDelete,
+                username: user.username
+            });
+
+            setShowDeleteModal(false);
+            setPostToDelete(null);
+            navigate('/');
+        } catch (error) {
+            console.error('Error deleting the post:', error);
+        }
+    };
+
     // Function to toggle the visibility of delete comment button
     const toggleDropdown = (index) => {
         setToggledComment(toggledComment === index ? null : index);
@@ -156,9 +194,20 @@ export default function PostComments() {
                 <>
                     <div className="post-card">
                         <div className='post-details'>
+                            {post.username === user.username && (
+                                <div className="post-edit-options">
+                                    <button className="three-dot-button" onClick={() => toggleEditOptions(post.post_id)}>...</button>
+                                    {showEditOptions[post.post_id] && (
+                                        <div className="edit-options-popup">
+                                            <button onClick={() => handleEdit(post.post_id)}>Edit</button>
+                                            <button onClick={() => confirmDelete(post.post_id)}>Delete</button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             <span className='post-username'>{post.username} - {post.contact}</span>
                             <span className='post-pet-name'>{post.pet_name}
-                                <span className={`status ${post.status === 'missing' ? 'status-missing' : 'status-found'}`}> : <span>{post.status}</span></span>
+                                <span className={`status ${post.status === 'Lost' ? 'status-lost' : 'status-found'}`}> : <span>{post.status}</span></span>
                             </span>
                             <span className='post-info'>{post.species} - {post.last_seen_location} - {formatDate(post.last_seen_date)} - Reward: ${post.reward} </span>
                             <p className="post-description">{post.description}</p>
@@ -208,6 +257,16 @@ export default function PostComments() {
                         ))}
                     </div>
                 </>
+            )}
+
+            {showDeleteModal && (
+                <div className="delete-modal">
+                    <div className="delete-modal-content">
+                        <p>Are you sure you want to delete this post?</p>
+                        <button className='cancel' onClick={() => setShowDeleteModal(false)}>No</button>
+                        <button className='confirm' onClick={handleDelete}>Yes</button>
+                    </div>
+                </div>
             )}
 
             {/* Modal for enlarged image */}

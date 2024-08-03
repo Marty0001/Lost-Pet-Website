@@ -17,8 +17,16 @@ export default function Register() {
     // Handle form submission for registration
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        if (username.length < 6 || username.length > 20){
+            setErrorMessage('username must be 6 - 20 characters');
+            return;
+        }else if (password.length < 8 || password.length > 20){
+            setErrorMessage('password must be 8 - 20 characters');
+            return;
+        }
+        
         setLoading(true);
-
         try {
             const response = await axios.post("http://localhost:8080/lost-pet-website/server/users/register_user.php", {
                 username,
@@ -73,8 +81,7 @@ export default function Register() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
-                        maxLength={20} 
-                        minLength={8}
+                        
                     />
                 </div>
 
@@ -87,8 +94,7 @@ export default function Register() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        maxLength={20} 
-                        minLength={8}
+                    
                     />
                     <span className="toggle-password" onClick={togglePasswordVisibility}> 👁 </span>
                 </div>

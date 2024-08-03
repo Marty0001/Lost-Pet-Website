@@ -11,6 +11,9 @@ export default function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [password, setPassword] = useState("");
     const [deleteError, setDeleteError] = useState("");
+    const [showEditOptions, setShowEditOptions] = useState({});
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [postToDelete, setPostToDelete] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -49,10 +52,40 @@ export default function Profile() {
         return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`;
     };
 
-    // Navigate to edit post page
-    const handleEdit = (postId) => {
-        navigate(`/edit_post/${postId}`);
+    // Toggle the edit and delete button visibility
+    const toggleEditOptions = (postId) => {
+        setShowEditOptions((prev) => ({
+            ...prev,
+            [postId]: !prev[postId]
+        }));
     };
+
+    // Navigate to edit post page for the chosen post
+    const handleEdit = (postId) => {
+        navigate(`/edit_post/${postId}`); // Redirect to the edit post page
+    };
+
+    // Display modal popup for delete confirmation
+    const confirmDelete = (postId) => {
+        setPostToDelete(postId);
+        setShowDeleteModal(true);
+    };
+
+    // Delete post on confirmation
+    const handleDelete = async () => {
+        try {
+            await axios.post('http://localhost:8080/lost-pet-website/server/posts/delete_post.php', {
+                post_id: postToDelete,
+                username: user.username
+            });
+            setPosts(posts.filter(post => post.post_id !== postToDelete));
+            setShowDeleteModal(false);
+            setPostToDelete(null);
+        } catch (error) {
+            console.error('Error deleting the post:', error);
+        }
+    };
+
 
     // Deletes all users likes, posts, commments, images, everything associated with them
     const handleDeleteProfile = async () => {
@@ -90,15 +123,24 @@ export default function Profile() {
         <>
             <h1>{user.username}'s Posts</h1>
             <div className="posts-container">
+                {posts.length < 1 ? (<p>No posts yet...</p>) : <></>}
                 {posts.map(post => (
                     <div key={post.post_id} className="post-card">
                         <div className='post-details'>
                             {post.username === user.username && (
-                                <button className="edit-post-button" onClick={() => handleEdit(post.post_id)}>Edit ✎</button>
+                                <div className="post-edit-options">
+                                    <button className="three-dot-button" onClick={() => toggleEditOptions(post.post_id)}>...</button>
+                                    {showEditOptions[post.post_id] && (
+                                        <div className="edit-options-popup">
+                                            <button onClick={() => handleEdit(post.post_id)}>Edit</button>
+                                            <button onClick={() => confirmDelete(post.post_id)}>Delete</button>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                             <span className='post-username'>{post.username} - {post.contact}</span>
                             <span className='post-pet-name'>{post.pet_name}
-                                <span className={`status ${post.status === 'missing' ? 'status-missing' : 'status-found'}`}> : <span>{post.status}</span></span>
+                                <span className={`status ${post.status === 'Lost' ? 'status-lost' : 'status-found'}`}> : <span>{post.status}</span></span>
                             </span>
                             <span className='post-info'>{post.species} - {post.last_seen_location} - {formatDate(post.last_seen_date)} - Reward: ${post.reward} </span>
                             <p className="post-description">{post.description}</p>
@@ -128,7 +170,15 @@ export default function Profile() {
             <div className="profile-actions">
                 <button className="delete-profile-button" onClick={() => setShowModal(true)}>Delete Profile</button>
             </div>
-
+            {showDeleteModal && (
+                <div className="delete-modal">
+                    <div className="delete-modal-content">
+                        <p>Are you sure you want to delete this post?</p>
+                        <button className='cancel' onClick={() => setShowDeleteModal(false)}>No</button>
+                        <button className='confirm' onClick={handleDelete}>Yes</button>
+                    </div>
+                </div>
+            )}
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">

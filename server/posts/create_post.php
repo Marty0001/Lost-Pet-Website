@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $location = $_POST["location"];
     $description = $_POST["description"];
     $contactInfo = $_POST["contactInfo"];
-    $status = "missing";
+    $status = $_POST["status"];
     $reward = isset($_POST["reward"]) ? $_POST["reward"] : null;
     $lastSeenDate = isset($_POST["lastSeenDate"]) ? $_POST["lastSeenDate"] : date('Y-m-d'); // Use provided date or current date if not provided
 
