@@ -3,7 +3,7 @@
 https://github.com/user-attachments/assets/90930bbd-2307-4697-bb9e-35e203d1d7ee
 
 
-<h2>A website where users can uplaod posts of their lost pets and increase the chances of finding them.</h2>
+<h2>A website where users can upload posts of their lost pets and increase the chances of finding them.</h2>
 
 <b>Features include:</b>
 <ul>
